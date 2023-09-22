@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  static String id = 'welcome_screen';
+  static const String id = '/welcome_screen';
 
   const WelcomeScreen({super.key});
   @override
@@ -69,6 +69,7 @@ class WelcomeScreenState extends State<WelcomeScreen>
                       textStyle: const TextStyle(
                         fontSize: 45.0,
                         fontWeight: FontWeight.w900,
+                        color: Colors.black
                       ),
                     ),
                   ],

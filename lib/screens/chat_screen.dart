@@ -37,6 +37,19 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  // void getMessages() async{
+  //   final messages = await _firestore.collection('messages').getDocuments();
+  //   messages.documents
+  // }
+
+  void messagesStream() async{
+    await for( var snapshot in _firestore.collection('messages').snapshots()){
+      for(var message in snapshot.docs){
+        print(message.data);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +71,22 @@ class ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            StreamBuilder<QuerySnapshot>(
+              stream: _firestore.collection('messages').snapshots(),
+             builder: (context,snapshot){
+              if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.lightBlueAccent,
+            ),
+          );
+        }
+        final messages = snapshot.data.docs.reversed;
+             },
+             ),
+
+
+
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(

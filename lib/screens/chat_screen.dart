@@ -16,6 +16,8 @@ class ChatScreen extends StatefulWidget {
 }
 
 class ChatScreenState extends State<ChatScreen> {
+  //to clear the text field of the keyboard
+  final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   late String messageText;
 
@@ -26,11 +28,12 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void getCurrentUser() async {
-    final user = await _auth.currentUser;
     try {
+      final user = await _auth.currentUser;
+
       if (user != null) {
         loggedInUser = user;
-        print(loggedInUser.email);
+        //  print(loggedInUser.email);
       }
     } catch (e) {
       print(e);
@@ -42,9 +45,9 @@ class ChatScreenState extends State<ChatScreen> {
   //   messages.documents
   // }
 
-  void messagesStream() async{
-    await for( var snapshot in _firestore.collection('messages').snapshots()){
-      for(var message in snapshot.docs){
+  void messagesStream() async {
+    await for (var snapshot in _firestore.collection('messages').snapshots()) {
+      for (var message in snapshot.docs) {
         print(message.data);
       }
     }
@@ -71,22 +74,6 @@ class ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            StreamBuilder<QuerySnapshot>(
-              stream: _firestore.collection('messages').snapshots(),
-             builder: (context,snapshot){
-              if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
-            ),
-          );
-        }
-        final messages = snapshot.data.docs.reversed;
-             },
-             ),
-
-
-
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -94,6 +81,7 @@ class ChatScreenState extends State<ChatScreen> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
+                      controller: messageTextController,
                       onChanged: (value) {
                         messageText = value;
                       },
@@ -102,6 +90,8 @@ class ChatScreenState extends State<ChatScreen> {
                   ),
                   TextButton(
                     onPressed: () {
+                      //to clear textfield after pressing send buttom
+                      messageTextController.clear();
                       //messageText + loggedInUser.email
                       _firestore.collection('messages').add({
                         'text': messageText,

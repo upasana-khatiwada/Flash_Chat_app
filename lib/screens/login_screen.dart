@@ -32,11 +32,16 @@ class LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Hero(
-                  tag: 'logo',
-                  child: SizedBox(
-                    height: 200.0,
-                    child: Image.asset('images/logo.png'),
+                //flexible makes the screen making adjusted at different size and
+                //when keybord popped up it contract and ui make smaller but when expand it becomes big
+                
+                Flexible (
+                  child: Hero(
+                    tag: 'logo',
+                    child: SizedBox(
+                      height: 200.0,
+                      child: Image.asset('images/logo.png'),
+                    ),
                   ),
                 ),
                 const SizedBox(

@@ -3,6 +3,8 @@ import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../message_stream.dart';
+
 final _firestore = FirebaseFirestore.instance;
 late User loggedInUser;
 
@@ -33,10 +35,13 @@ class ChatScreenState extends State<ChatScreen> {
 
       if (user != null) {
         loggedInUser = user;
+
         //  print(loggedInUser.email);
+        
       }
     } catch (e) {
-      print(e);
+       print(e);
+      
     }
   }
 
@@ -45,13 +50,13 @@ class ChatScreenState extends State<ChatScreen> {
   //   messages.documents
   // }
 
-  void messagesStream() async {
-    await for (var snapshot in _firestore.collection('messages').snapshots()) {
-      for (var message in snapshot.docs) {
-        print(message.data);
-      }
-    }
-  }
+  // void messagesStream() async {
+  //   await for (var snapshot in _firestore.collection('messages').snapshots()) {
+  //     for (var message in snapshot.docs) {
+  //       print(message.data);
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +79,7 @@ class ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            const MessagesStream(),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -96,6 +102,7 @@ class ChatScreenState extends State<ChatScreen> {
                       _firestore.collection('messages').add({
                         'text': messageText,
                         'sender': loggedInUser.email,
+                        'timestamp': Timestamp.now(),
                       });
                     },
                     child: const Text(

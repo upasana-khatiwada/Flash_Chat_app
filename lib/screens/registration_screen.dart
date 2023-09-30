@@ -36,13 +36,11 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Flexible(
-                    child: Hero(
-                      tag: 'logo',
-                      child: SizedBox(
-                        height: 200.0,
-                        child: Image.asset('images/logo.png'),
-                      ),
+                  Hero(
+                    tag: 'logo',
+                    child: SizedBox(
+                      height: 200.0,
+                      child: Image.asset('images/logo.png'),
                     ),
                   ),
                   const SizedBox(
@@ -89,7 +87,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                       //   final newUser = await _auth.createUserWithEmailAndPassword(
                       //       email: email, password: password);
                       //        Navigator.pushNamed(context, LoginScreen.id);
-      
+
                       //       // if(newUser != null){
                       //       //   Navigator.pushNamed(context, ChatScreen.id);
                       //       // }
@@ -106,7 +104,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                         final newUser =
                             await _auth.createUserWithEmailAndPassword(
                                 email: email, password: password);
-      
+
                         if (newUser != null) {
                           Navigator.pushNamed(context, LoginScreen.id);
                         }
@@ -114,7 +112,23 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                           showSpinner = false;
                         });
                       } catch (e) {
-                        print(e);
+                        //print(e);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Error"),
+                                content: Text("An error occured: $e"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text("Close"),
+                                  ),
+                                ],
+                              );
+                            });
                       }
                     },
                   )

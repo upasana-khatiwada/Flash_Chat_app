@@ -25,93 +25,91 @@ class LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                //flexible makes the screen making adjusted at different size and
-                //when keybord popped up it contract and ui make smaller but when expand it becomes big
-                
-                Flexible (
-                  child: Hero(
-                    tag: 'logo',
-                    child: SizedBox(
-                      height: 200.0,
-                      child: Image.asset('images/logo.png'),
-                    ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              //flexible makes the screen making adjusted at different size and
+              //when keybord popped up it contract and ui make smaller but when expand it becomes big
+              
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: SizedBox(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
                   ),
                 ),
-                const SizedBox(
-                  height: 48.0,
+              ),
+              const SizedBox(
+                height: 48.0,
+              ),
+              TextField(
+                keyboardType: TextInputType.emailAddress,
+                style: const TextStyle(color: Colors.black),
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  email = value;
+                },
+                decoration: kTextFieldDecoration.copyWith(
+                  hintText: 'Enter your email',
+                  hintStyle: TextStyle(color: Colors.grey.shade400),
                 ),
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  style: const TextStyle(color: Colors.black),
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    email = value;
-                  },
-                  decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Enter your email',
-                    hintStyle: TextStyle(color: Colors.grey.shade400),
-                  ),
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              TextField(
+                obscureText: true,
+                style: const TextStyle(color: Colors.black),
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  password = value;
+                },
+                decoration: kTextFieldDecoration.copyWith(
+                  hintText: 'Enter your password',
+                  hintStyle: TextStyle(color: Colors.grey.shade400),
                 ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                  obscureText: true,
-                  style: const TextStyle(color: Colors.black),
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    password = value;
-                  },
-                  decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Enter your password',
-                    hintStyle: TextStyle(color: Colors.grey.shade400),
-                  ),
-                ),
-                const SizedBox(
-                  height: 24.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Material(
-                    color: Colors.lightBlueAccent,
-                    borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-                    elevation: 5.0,
-                    child: MaterialButton(
-                      onPressed:  () async{
-                        setState(() {
-                          showSpinner = true;
-                        });
-                        try{
-                        final user = await _auth.signInWithEmailAndPassword(email: email, password: password);
-                        if (user != null) {
-                        Navigator.pushNamed(context, ChatScreen.id);
-                      }
+              ),
+              const SizedBox(
+                height: 24.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Material(
+                  color: Colors.lightBlueAccent,
+                  borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+                  elevation: 5.0,
+                  child: MaterialButton(
+                    onPressed:  () async{
                       setState(() {
-                        showSpinner = false;
+                        showSpinner = true;
                       });
-        
-                        }catch (e) {
-                      print(e);
+                      try{
+                      final user = await _auth.signInWithEmailAndPassword(email: email, password: password);
+                      if (user != null) {
+                      Navigator.pushNamed(context, ChatScreen.id);
                     }
-                        
-                      },
-                      minWidth: 200.0,
-                      height: 42.0,
-                      child: const Text(
-                        'Log In',
-                      ),
+                    setState(() {
+                      showSpinner = false;
+                    });
+        
+                      }catch (e) {
+                    print(e);
+                  }
+                      
+                    },
+                    minWidth: 200.0,
+                    height: 42.0,
+                    child: const Text(
+                      'Log In',
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

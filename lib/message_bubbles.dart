@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble(
-      {super.key, required this.sender, this.text, required this.isMe});
+      {super.key, required this.sender, required this.text, required this.isMe});
   final String sender;
-  final String? text;
+  final String text;
   final bool isMe;
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,7 @@ class MessageBubble extends StatelessWidget {
             style: const TextStyle(fontSize: 12, color: Colors.black54),
           ),
           Material(
+            elevation: 5.0,
             borderRadius:  isMe
                 ? const BorderRadius.only(
                     topLeft: Radius.circular(30.0),
@@ -33,7 +34,8 @@ class MessageBubble extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Text(
-                '$text from $sender',
+                // '$text from $sender',
+                text,
                 style: TextStyle(
                   color: isMe ? Colors.white : Colors.black54,
                   fontSize: 18.0,

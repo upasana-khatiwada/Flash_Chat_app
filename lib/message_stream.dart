@@ -11,7 +11,14 @@ class MessagesStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').snapshots(),
+      //stream: _firestore.collection('messages').snapshots(),
+       stream: _firestore
+          .collection('messages')
+          .orderBy(
+            'timestamp',
+            descending: true,
+          )
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -21,9 +28,9 @@ class MessagesStream extends StatelessWidget {
           );
         }
 
-        final messages = snapshot.data?.docs.reversed;
+        final messages = snapshot.data!.docs;
         List<MessageBubble> messageBubbles = [];
-        for (var message in messages!) {
+        for (var message in messages) {
           // final messageText = message.data()['text'];
           // final messageSender = message.data()['sender'];
 
@@ -39,6 +46,7 @@ class MessagesStream extends StatelessWidget {
         }
         return Expanded(
           child: ListView(
+            //message gonna show from the bottom to top view instead of the other way
             reverse: true,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             children: messageBubbles,
